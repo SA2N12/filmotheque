@@ -15,6 +15,7 @@ public class Film {
 	
 	private long id;
 	
+	
 	@NotEmpty
 	@Size(max=250)
 	private String titre;
