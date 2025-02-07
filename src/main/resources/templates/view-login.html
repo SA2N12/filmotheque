@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP ENI - Se connecter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon"/>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div th:replace="~{/fragments/fragment-entete :: entete}"></div>
+    
+    <main class="flex-grow flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <h1 class="text-2xl font-bold mb-6 text-center text-blue-700">Se connecter</h1>
+            <form th:action="@{/login}" method="POST">
+                <p th:if="${param.error}" class="text-red-500 mb-4">L'email ou le mot de passe saisi est invalide</p>
+                <div class="mb-4">
+                    <label for="idUsername" class="block text-gray-700">Email</label>
+                    <input id="idUsername" type="text" name="username" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label for="idPassword" class="block text-gray-700">Mot de passe</label>
+                    <input id="idPassword" type="password" name="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm hover:shadow-md">Se connecter</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <div th:replace="~{/fragments/fragment-pied :: pied}"></div>
+
+</body>
+</html>

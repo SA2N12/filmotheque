@@ -1,0 +1,18 @@
+<header th:fragment="entete">
+    <nav class="bg-gradient-to-r from-blue-900 to-blue-700 p-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <a th:href="@{/}" class="flex items-center"></a>
+                    <img th:src="@{/img/logoFilmotheque.png}" alt="" class="h-8 w-8 mr-2">
+                    <p class="text-white text-lg font-semibold">Filmothèque</p>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <p sec:authorize="hasRole('ROLE_ADMIN')" class="text-white"><a th:href="@{/creer}" class="hover:underline">Creer</a></p>
+                <p class="text-white"><a th:href="@{/films}" class="hover:underline">Films</a></p>
+                <p sec:authorize="!isAuthenticated" class="text-white"><a th:href="@{/login}" class="hover:underline">Se connecter</a></p>
+                <p sec:authorize="isAuthenticated" class="text-white"><a th:href="@{/logout}" class="hover:underline">Se déconnecter</a></p>
+            </div>
+        </div>
+    </nav>
+</header>

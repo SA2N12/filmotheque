@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="bg-gray-50" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Détail du film</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon"/>
+  </head>
+
+  <body class="min-h-screen flex flex-col">
+    <header th:replace="~{fragments/fragment-entete :: entete}"></header>
+    <main class="container mx-auto px-4 py-8 flex-grow">
+      <div class="max-w-5xl mx-auto">
+        <div
+          class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-t-xl p-8"
+        >
+          <h1 class="text-4xl font-bold mb-4" th:text="${film.titre}">
+            Titre du film
+          </h1>
+
+          <div class="flex items-center gap-4">
+            <span
+              class="px-3 py-1 bg-blue-500 rounded-full text-sm"
+              th:text="${film.genre.titre}"
+            ></span>
+            <span
+              class="text-blue-200"
+              th:text="|${film.annee} • ${film.duree} min|"
+            ></span>
+          </div>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-b-xl p-8">
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div>
+              <h2 class="text-xl font-semibold mb-4">Informations</h2>
+              <div class="space-y-3">
+                <p class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                  </svg>
+                  <span class="text-gray-600">Réalisé par</span>
+                  <span
+                    class="font-medium"
+                    th:text="|${film.realisateur.prenom} ${film.realisateur.nom}|"
+                  ></span>
+                </p>
+                <p class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <span class="text-gray-600">Avec</span>
+                  <span
+                    class="font-medium"
+                    th:if="${!#lists.isEmpty(film.acteurs)}"
+                    th:text="${#strings.listJoin(#lists.toList(film.acteurs.![prenom + ' ' + nom]), ', ')}"
+                  >
+                  </span>
+                  <span
+                    class="font-medium text-gray-400"
+                    th:if="${#lists.isEmpty(film.acteurs)}"
+                  >
+                    Aucun acteur renseigné
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div>
+              <h2 class="text-xl font-semibold mb-4">Synopsis</h2>
+              <p
+                class="text-gray-600 leading-relaxed"
+                th:text="${film.synopsis}"
+              ></p>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-200 pt-8">
+            <h2 class="text-2xl font-bold mb-6">Avis des spectateurs</h2>
+            <div
+              th:if="${#lists.isEmpty(film.avis)}"
+              class="bg-gray-50 rounded-lg p-6 text-center text-gray-500"
+            >
+              <svg
+                class="w-12 h-12 mx-auto mb-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+              <p class="text-lg">Aucun avis pour ce film.</p>
+            </div>
+
+            <div th:if="${!#lists.isEmpty(film.avis)}" class="space-y-4">
+              <div
+                th:each="avis : ${film.avis}"
+                class="bg-gray-50 rounded-lg p-6 transition-shadow hover:shadow-md"
+              >
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center text-white font-bold"
+                    >
+                      <span
+                        th:text="${#strings.substring(avis.membre.email,0,1)}"
+                      ></span>
+                    </div>
+                    <span class="font-medium" th:text="${avis.membre.email}"
+                      >Email</span
+                    >
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <div class="flex items-center">
+                      <span th:each="i : ${#numbers.sequence(1, 5)}">
+                        <svg
+                          th:if="${i <= avis.note}"
+                          width="24px"
+                          height="24px"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          class="text-yellow-500"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <svg
+                          th:if="${i > avis.note}"
+                          width="24px"
+                          height="24px"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          class="text-gray-300"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p class="text-gray-600" th:text="${avis.commentaire}"></p>
+              </div>
+            </div>
+
+            <div sec:authorize="isAuthenticated" class="mt-12 bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+              <div class="flex items-center gap-3 mb-8">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/>
+                </svg>
+                <h3 class="text-2xl font-bold text-gray-900">Donner votre avis</h3>
+              </div>
+              <form th:action="@{/films/{id}/avis(id=${film.id})}" method="post" th:object="${avis}" class="space-y-8">
+                <div class="space-y-6">
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Note</label>
+                    <input type="number" min="0" max="5" required class="w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 p-3 shadow-sm transition"/>
+                    <span class="text-red-500 text-sm mt-1"></span>
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Commentaire</label>
+                    <textarea rows="4" required class="w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 p-3 shadow-sm transition"></textarea>
+                  </div>
+                </div>
+                <button type="submit" class="w-full md:w-auto px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm hover:shadow-md">Publier mon avis</button>
+              </form>
+            </div> 
+
+            <div sec:authorize="!isAuthenticated" class="mt-12 bg-gray-50 rounded-xl p-8 text-center border border-gray-200">
+              <p class="text-gray-600 text-lg">Vous devez être connecté pour publier un avis. <a href="/login" class="text-blue-600 hover:text-blue-800 font-medium">Se connecter</a></p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer th:replace="~{fragments/fragment-pied :: pied}"></footer>
+  </body>
+</html>

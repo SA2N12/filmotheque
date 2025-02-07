@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP ENI - Accueil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon"/>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <div th:replace="~{/fragments/fragment-entete :: entete}"></div>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">
+            Voici la bibliothèque des films de l'ENI Ecole
+        </h1>
+    </main>
+
+    <div th:replace="~{/fragments/fragment-pied :: pied}"></div>
+
+</body>
+</html>

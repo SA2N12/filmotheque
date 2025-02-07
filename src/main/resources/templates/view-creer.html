@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP ENI - Création d'un film</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" th:href="@{/img/favicon.ico}" type="image/x-icon"/>
+</head>
+<body class="min-h-screen flex flex-col ">
+
+    <div th:replace="~{/fragments/fragment-entete :: entete}"></div>
+    
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">Création d'un film</h1>
+        
+        <form th:action="@{/creer}" method="POST" th:object="${film}" class="bg-white p-8 rounded-lg shadow-lg">
+            <ul th:if="${#fields.hasErrors('global')}" class="mb-4 text-red-500">
+                <li th:each="err : ${#fields.errors('global')}" th:text="#{${err}}"></li>
+            </ul>
+        
+            <div class="mb-4">
+                <label for="idGenre" class="block text-gray-700">Genre</label>
+                <select id="idGenre" th:field="*{genre}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option th:each="g : ${genreListe}" th:text="${g.titre}" th:value="${g.id}"></option>
+                </select>
+                <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="text-red-500 mt-2"></div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="idAnnee" class="block text-gray-700">Année</label>
+                <input id="idAnnee" type="text" th:field="*{annee}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+            </div>
+            
+            <div class="mb-4">
+                <label for="idTitre" class="block text-gray-700">Titre</label>
+                <input id="idTitre" type="text" th:field="*{titre}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                <div th:if="${#fields.hasErrors('titre')}" th:errors="*{titre}" class="text-red-500 mt-2"></div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="idRealisateur" class="block text-gray-700">Réalisateur</label>
+                <select id="idRealisateur" th:field="*{realisateur}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option th:each="p : ${participantListe}" th:value="${p.id}" th:text="${p.prenom} + ' ' + ${p.nom}"></option>
+                </select>
+                <div th:if="${#fields.hasErrors('realisateur')}" th:errors="*{realisateur}" class="text-red-500 mt-2"></div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="idDuree" class="block text-gray-700">Durée</label>
+                <input id="idDuree" type="text" th:field="*{duree}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+                <div th:if="${#fields.hasErrors('duree')}" th:errors="*{duree}" class="text-red-500 mt-2"></div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="idActeurs" class="block text-gray-700">Acteur(s)</label>
+                <select id="idActeurs" th:field="*{acteurs}" multiple="multiple" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option th:each="p : ${participantListe}" th:value="${p.id}" th:text="${p.prenom} + ' ' + ${p.nom}"></option>
+                </select>
+                <div th:if="${#fields.hasErrors('acteurs')}" th:errors="*{acteurs}" class="text-red-500 mt-2"></div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="idSynopsis" class="block text-gray-700">Synopsis</label>
+                <textarea id="idSynopsis" rows="3" th:field="*{synopsis}" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <div th:if="${#fields.hasErrors('synopsis')}" th:errors="*{synopsis}" class="text-red-500 mt-2"></div>
+            </div>
+            
+            <div>
+                <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm hover:shadow-md">Enregistrer</button>
+            </div>
+        </form>
+    </main>
+    
+    <div th:replace="~{/fragments/fragment-pied :: pied}"></div>
+
+</body>
+</html>
